@@ -1,0 +1,140 @@
+// // pages/doctor/ServicesList.tsx
+import React, { useState } from 'react';
+import { useServiceStore } from '../../store/useServiceStore'; // adjust path
+import {
+  Box, Typography, Container, Grid, Paper, Stack,
+  TextField, InputAdornment, Button, Avatar, Collapse, IconButton
+} from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+// import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+
+const ServicesList: React.FC = () => {
+  const { services, deleteService } = useServiceStore();
+  const [expandedId, setExpandedId] = useState<number | null>(null);
+  const [search, setSearch] = useState('');
+
+  const filteredServices = services.filter(s =>
+    s.title.toLowerCase().includes(search.toLowerCase())
+  );
+
+  return (
+    <Container maxWidth="xl" sx={{ mt: 4, pb: 6 }}>
+      {/* Header */}
+      <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 4 }}>
+        <Box>
+          <Typography variant="h4" fontWeight={500} color="#1A5F7A">Services</Typography>
+          <Typography variant="body2" color="text.secondary">
+            Total services: {services.length}
+          </Typography>
+        </Box>
+
+        <TextField
+          placeholder="Search services..."
+          size="small"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          sx={{ width: 280 }}
+          InputProps={{
+            startAdornment: <InputAdornment position="start"><SearchIcon /></InputAdornment>,
+            sx: { borderRadius: '50px', bgcolor: 'white' }
+          }}
+        />
+      </Stack>
+
+      <Grid container spacing={3}>
+        {filteredServices.map((service) => (
+          <Grid size={{ xs: 12, md: 6 }} key={service.id}>
+            <Paper
+              sx={{
+                p: 3,
+                borderRadius: '16px',
+                border: '1px solid #e0f2f1',
+                transition: 'all 0.2s',
+                '&:hover': { boxShadow: '0 4px 20px rgba(0,210,193,0.15)' }
+              }}
+            >
+              <Stack direction="row" spacing={2} alignItems="flex-start">
+                <Avatar
+                  variant="rounded"
+                  src={service.image}
+                  sx={{ width: 80, height: 80, borderRadius: 3 }}
+                />
+                <Box flexGrow={1}>
+                  <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
+                    <Box>
+                      <Typography variant="h6" color="#1A5F7A">{service.title}</Typography>
+                      <Typography variant="body2" color="#00D2C1" fontWeight={500}>
+                        ₹{service.amount}
+                      </Typography>
+                    </Box>
+                    <IconButton onClick={() => setExpandedId(expandedId === service.id ? null : service.id)}>
+                      {expandedId === service.id ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                    </IconButton>
+                  </Stack>
+
+                  <Collapse in={expandedId === service.id}>
+                    <Box mt={2} pt={2} borderTop="1px solid #eee">
+                      {service.description && (
+                        <>
+                          <Typography fontWeight={500} color="#1A5F7A" gutterBottom>About</Typography>
+                          <Typography variant="body2" color="text.secondary" paragraph>
+                            {service.description}
+                          </Typography>
+                        </>
+                      )}
+
+                      {service.instructions && service.instructions.length > 0 && (
+                        <>
+                          <Typography fontWeight={500} color="#1A5F7A" gutterBottom>Instructions</Typography>
+                          <Box component="ul" sx={{ pl: 2, m: 0, mb: 2 }}>
+                            {service.instructions.map((inst, i) => (
+                              <li key={i}>
+                                <Typography variant="body2" color="#00D2C1">{inst}</Typography>
+                              </li>
+                            ))}
+                          </Box>
+                        </>
+                      )}
+
+                      <Stack direction="row" spacing={1} justifyContent="flex-end">
+                        <Button
+                          startIcon={<EditIcon />}
+                          variant="contained"
+                          size="small"
+                          sx={{ bgcolor: '#e0f7fa', color: '#006064', borderRadius: '20px' }}
+                          // TODO: open edit modal / page
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          startIcon={<DeleteOutlineIcon />}
+                          variant="contained"
+                          size="small"
+                          color="error"
+                          sx={{ borderRadius: '20px' }}
+                          onClick={() => {
+                            if (window.confirm("Delete this service?")) {
+                              deleteService(service.id);
+                            }
+                          }}
+                        >
+                          Delete
+                        </Button>
+                      </Stack>
+                    </Box>
+                  </Collapse>
+                </Box>
+              </Stack>
+            </Paper>
+          </Grid>
+        ))}
+      </Grid>
+    </Container>
+  );
+};
+
+export default ServicesList;

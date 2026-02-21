@@ -1,0 +1,21 @@
+
+{
+  "professionals": [
+    { "id": 1, "name": "Dr. Robert Martinez", "role": "Pediatrician", "rating": 5, "img": "https://i.pravatar.cc/150?u=dr1", "text": "This platform has streamlined our clinic operations significantly." },
+    { "id": 2, "name": "Dr. Amanda Lee", "role": "Dermatologist", "rating": 4, "img": "https://i.pravatar.cc/150?u=dr2", "text": "Excellent platform for managing appointments and patient history." },
+    { "id": 3, "name": "Dr. Sarah Jenkins", "role": "Cardiologist", "rating": 5, "img": "https://i.pravatar.cc/150?u=dr3", "text": "The patient communication tools are top-notch and very secure." },
+    { "id": 4, "name": "Dr. Michael Chen", "role": "Orthopedic", "rating": 4, "img": "https://i.pravatar.cc/150?u=dr4", "text": "User interface is very intuitive for both doctors and staff." },
+    { "id": 5, "name": "Dr. Lisa Wong", "role": "Neurologist", "rating": 5, "img": "https://i.pravatar.cc/150?u=dr5", "text": "Highly recommend for any multi-specialty hospital setup." },
+    { "id": 6, "name": "Dr. James Wilson", "role": "General Surgeon", "rating": 4, "img": "https://i.pravatar.cc/150?u=dr6", "text": "Saves me at least 2 hours of paperwork every single day." },
+    { "id": 7, "name": "Dr. Priya Sharma", "role": "Gynecologist", "rating": 5, "img": "https://i.pravatar.cc/150?u=dr7", "text": "The emergency call feature is a life-saver for my patients." }
+  ],
+  "patients": [
+    { "id": 1, "name": "David Thompson", "role": "Patient", "rating": 5, "img": "https://i.pravatar.cc/150?u=p1", "text": "The wait time has reduced significantly. Very user-friendly!" },
+    { "id": 2, "name": "Emily Williams", "role": "Patient", "rating": 4, "img": "https://i.pravatar.cc/150?u=p2", "text": "Booking an appointment was never this easy before." },
+    { "id": 3, "name": "Chris Evans", "role": "Patient", "rating": 5, "img": "https://i.pravatar.cc/150?u=p3", "text": "I can access my medical reports from anywhere. Great work!" },
+    { "id": 4, "name": "Sophia Miller", "role": "Patient", "rating": 5, "img": "https://i.pravatar.cc/150?u=p4", "text": "Customer support is very responsive and helpful." },
+    { "id": 5, "name": "John Doe", "role": "Patient", "rating": 4, "img": "https://i.pravatar.cc/150?u=p5", "text": "Affordable and reliable healthcare services." },
+    { "id": 6, "name": "Olivia Brown", "role": "Patient", "rating": 5, "img": "https://i.pravatar.cc/150?u=p6", "text": "The reminders for follow-ups are very helpful." },
+    { "id": 7, "name": "Daniel Garcia", "role": "Patient", "rating": 5, "img": "https://i.pravatar.cc/150?u=p7", "text": "Clean and professional interface. Best in the market." }
+  ]
+}
