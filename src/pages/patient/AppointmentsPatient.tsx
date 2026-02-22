@@ -75,7 +75,7 @@ const AppointmentsPatient: React.FC = () => {
           <Grid size={{xs:12}}>
             <Paper sx={{ p: 10, textAlign: 'center', borderRadius: '20px', border: '1px dashed #ccc' }}>
               <Typography variant="h6" color="text.secondary">
-                No matching appointments found
+                No appointments 
               </Typography>
             </Paper>
           </Grid>

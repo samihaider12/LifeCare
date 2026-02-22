@@ -18,7 +18,8 @@ import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import LoginIcon from '@mui/icons-material/Login';
 import MenuIcon from '@mui/icons-material/Menu';
 import Footer from '../Footer'; // Footer ka sahi path check kar lein
-
+//
+import logoImg from "../../assets/logo.jpg"
 // Navigation items
 const navItems = [
     { name: 'Home', path: '/' },
@@ -64,7 +65,7 @@ const PatientLayout: React.FC = () => {
                         }}>
                             <Box
                                 component="img"
-                                src="/src/assets/logo.jpg"
+                                src={logoImg}
                                 alt="Logo"
                                 sx={{
                                     width: '45px',

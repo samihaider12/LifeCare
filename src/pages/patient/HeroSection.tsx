@@ -4,7 +4,8 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import ShieldIcon from '@mui/icons-material/Shield';
 import PeopleIcon from '@mui/icons-material/People'; 
 // ////
- 
+ import logoImg from "../../assets/logo.jpg"
+ import drImg from "../../assets/dr.webp"
  
 const Hero = () => {
     return (
@@ -32,7 +33,7 @@ const Hero = () => {
                                 }}>
                                     <Box
                                         component="img"
-                                        src="/src/assets/logo.jpg" // Apni image ka path yahan dein
+                                        src={logoImg} // Apni image ka path yahan dein
                                         alt="Doctors"
                                         sx={{
                                             width: '40px',
@@ -98,7 +99,7 @@ const Hero = () => {
                     <Grid size={{ xs: 12, md: 6 }} sx={{ display: 'flex', justifyContent: 'center' }}>
                         <Box
                             component="img"
-                            src="/src/assets/dr.webp" // Apni image ka path yahan dein
+                            src={drImg} // Apni image ka path yahan dein
                             alt="Doctors"
                             sx={{
                                 width: '100%',

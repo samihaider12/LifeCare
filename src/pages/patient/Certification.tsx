@@ -1,15 +1,22 @@
 import React from 'react';
 import { Box, Typography, Container, Grid, Chip, Divider, Stack } from '@mui/material';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
-
+//
+import pic1 from "../../assets/pic1.webp"
+ import pic2 from "../../assets/p2.webp"
+ import pic3 from "../../assets/p3.webp"
+ import pic4 from "../../assets/p4.svg"
+ import pic5 from "../../assets/p5.webp"
+ import pic6 from "../../assets/p6.webp"
+ 
 // Logos ka data array taaki code clean rahe
 const certs = [
-    { name: 'Medical Commission', img: '/src/assets/pic1.webp' },
-    { name: 'Government Approved', img: '/src/assets/p2.webp' },
-    { name: 'NABH Accredited', img: '/src/assets/p3.webp' },
-    { name: 'Medical Council', img: '/src/assets/p4.svg' },
-    { name: 'Quality Healthcare', img: '/src/assets/p5.webp' },
-    { name: 'Paramedical Council', img: '/src/assets/p6.webp' },
+    { name: 'Medical Commission', img: pic1 },
+    { name: 'Government Approved', img: pic2 },
+    { name: 'NABH Accredited', img: pic3 },
+    { name: 'Medical Council', img: pic4 },
+    { name: 'Quality Healthcare', img: pic5 },
+    { name: 'Paramedical Council', img: pic6 },
 ];
 
 const Certification: React.FC = () => {

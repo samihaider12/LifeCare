@@ -14,7 +14,8 @@ import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
-
+///
+import logoImg from "../../assets/logo.jpg"
 const AdminLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -97,7 +98,7 @@ const AdminLayout = () => {
         >
           {/* LOGO */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Avatar src="/src/assets/logo.jpg" sx={{ width: { xs: 35, md: 40 }, height: { xs: 35, md: 40 } }} />
+            <Avatar src={logoImg} sx={{ width: { xs: 35, md: 40 }, height: { xs: 35, md: 40 } }} />
             <Box>
               <Typography variant="h6" sx={{ fontWeight: 600, color: '#1A5F7A', lineHeight: 1, fontSize: { xs: '1rem', md: '1.25rem' } }}>
                 LifeCare

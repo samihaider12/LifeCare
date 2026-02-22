@@ -1,5 +1,6 @@
 import { Box, Container, Grid, Typography, Link, Stack, IconButton, TextField, Button } from '@mui/material';
 import { Facebook, Twitter, Instagram, LinkedIn, YouTube, Phone, Email, LocationOn } from '@mui/icons-material';
+import logoImg from '../assets/logo.jpg';
 
 const Footer = () => {
   return (
@@ -11,7 +12,7 @@ const Footer = () => {
           <Grid size={{ xs: 12, md: 3 }}>
             <Stack spacing={2}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <img src="/src/assets/logo.jpg" alt="Logo" style={{ width: 40 }} /> {/* Image path set karein */}
+                <img src={logoImg} alt="Logo" style={{ width: 40 }} /> {/* Image path set karein */}
                 <Typography variant="h6" sx={{ fontWeight: 500, color: '#1A5F7A' }}>LifeCare</Typography>
               </Box>
               <Typography variant="body2" sx={{ color: ' black', lineHeight: 1.6 }}>
