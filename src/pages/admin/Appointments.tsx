@@ -47,14 +47,15 @@ const Appointments: React.FC = () => {
   return (
     <Container maxWidth="xl" sx={{ mt: 4, pb: 8 }}>
       {/* HEADER */}
-      <Stack
+      <Grid
+        size={{xs:12}}
         direction={{ xs: 'column', md: 'row' }}
         justifyContent="space-between"
         alignItems="flex-start"
         sx={{ mb: 4 }}
       >
         <Box>
-          <Typography variant="h4" sx={{ fontWeight: 700, color: '#1A5F7A' }}>
+          <Typography variant="h4" sx={{ fontWeight: 500, color: '#1A5F7A' }}>
             Appointments
           </Typography>
           <Typography variant="body2" color="textSecondary">
@@ -69,7 +70,7 @@ const Appointments: React.FC = () => {
             size="small"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            sx={{ width: '300px', '& .MuiOutlinedInput-root': { borderRadius: '50px', bgcolor: '#fff' } }}
+            sx={{ width: '300px', '& .MuiOutlinedInput-root': { borderRadius: '8px', bgcolor: '#fff' } }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -78,17 +79,13 @@ const Appointments: React.FC = () => {
               ),
             }}
           />
-          <TextField
-            type="date"
-            size="small"
-            sx={{ '& .MuiOutlinedInput-root': { borderRadius: '50px', bgcolor: '#fff' } }}
-          />
+          
           <TextField
             select
             size="small"
             value={specialty}
             onChange={(e) => setSpecialty(e.target.value)}
-            sx={{ minWidth: '150px', '& .MuiOutlinedInput-root': { borderRadius: '50px', bgcolor: '#fff' } }}
+            sx={{ minWidth: '150px', '& .MuiOutlinedInput-root': { borderRadius: '8px', bgcolor: '#fff' } }}
           >
             <MenuItem value="All specialties">All specialties</MenuItem>
             <MenuItem value="Ophthalmology">Ophthalmology</MenuItem>
@@ -97,7 +94,7 @@ const Appointments: React.FC = () => {
           </TextField>
           <Button
             variant="contained"
-            sx={{ bgcolor: '#00D2C1', borderRadius: '50px', px: 3 }}
+            sx={{ bgcolor: '#00D2C1', borderRadius: '8px', px: 3 }}
             onClick={() => {
               setSearchTerm('');
               setSpecialty('All specialties');
@@ -106,7 +103,7 @@ const Appointments: React.FC = () => {
             Clear
           </Button>
         </Stack>
-      </Stack>
+      </Grid>
 
       {/* APPOINTMENTS GRID */}
       <Grid container spacing={3}>

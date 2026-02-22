@@ -7,7 +7,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import StarIcon from '@mui/icons-material/Star';
 import { useMedicalStore } from '../../store/useMedicalStore';
-
+import Swal from 'sweetalert2';
 const ListDoctors: React.FC = () => {
     const { doctors, deleteDoctor } = useMedicalStore();
     const [searchTerm, setSearchTerm] = useState("");
@@ -18,11 +18,33 @@ const ListDoctors: React.FC = () => {
         dr.specialty.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const handleDelete = (id: string) => {
-        if (window.confirm("Are you sure you want to delete this doctor?")) {
+  const handleDelete = (id: string) => {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "Do you really want to delete this doctor? This action cannot be undone.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33', // Delete button red color
+        cancelButtonColor: '#3085d6', // Cancel button blue color
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, keep it',
+        reverseButtons: true // Buttons ki position swap karne ke liye
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Delete action perform karein
             deleteDoctor(id);
+
+            // Success message show karein
+            Swal.fire({
+                title: 'Deleted!',
+                text: 'The doctor record has been removed.',
+                icon: 'success',
+                timer: 2000,
+                showConfirmButton: false
+            });
         }
-    };
+    });
+};
 
     return (
         <Container maxWidth="xl" sx={{ mt: 4, pb: 8 }}>

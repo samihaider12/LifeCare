@@ -1,10 +1,8 @@
-import { Box, Typography, Button, Grid, Stack, Container, Rating } from '@mui/material';
+import { Box, Typography, Grid, Stack, Container, Rating } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import ShieldIcon from '@mui/icons-material/Shield';
-import PeopleIcon from '@mui/icons-material/People';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
+import PeopleIcon from '@mui/icons-material/People'; 
 // ////
  
  
@@ -15,7 +13,7 @@ const Hero = () => {
                 sx={{
                     border: '2px solid #00D2C1', // Image wala green border
                     borderRadius: '18px',
-                    p: { xs: 4, md: 5 },
+                    p: { xs: "8px", md: "17px" },
                     position: 'relative',
                     backgroundColor: '#fff',
                     overflow: 'hidden',
@@ -61,77 +59,40 @@ const Hero = () => {
                                     At Your Fingertips
                                 </Typography>
                             </Box>
-
-                            {/* Feature Tags (Grid 2x2) */}
-                            <Grid container spacing={2} sx={{ mt: 2 }}>
-                                {[
-                                    { text: 'Certified Specialists', icon: <CheckCircleIcon fontSize="small" /> },
-                                    { text: '24/7 Availability', icon: <AccessTimeIcon fontSize="small" /> },
-                                    { text: 'Safe & Secure', icon: <ShieldIcon fontSize="small" /> },
-                                    { text: '500+ Doctors', icon: <PeopleIcon fontSize="small" /> },
-                                ].map((item, index) => (
-                                    <Grid size={{ xs: 6 }} key={index}>
-                                        <Box
-                                            sx={{
-                                                background: 'linear-gradient(90deg, #5EE7B7 0%, #A7F3D0 100%)', // Image ka gradient
-                                                p: 1.5,
-                                                borderRadius: '20px',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                gap: 1,
-                                                boxShadow: '0px 4px 10px rgba(0,0,0,0.05)'
-                                            }}
-                                        >
-                                            <Box sx={{ color: '#059669', display: 'flex' }}>{item.icon}</Box>
-                                            <Typography variant="body2" sx={{ fontWeight: 600, color: '#065F46' }}>
-                                                {item.text}
-                                            </Typography>
-                                        </Box>
-                                    </Grid>
-                                ))}
-                            </Grid>
-
-                            {/* Action Buttons */}
-                            <Stack direction="row" spacing={3} sx={{ mt: 4 }}>
-                                <Button
-                                    variant="contained"
-                                    startIcon={<CalendarMonthIcon />}
-                                    sx={{
-                                        bgcolor: '#00D2C1',
-                                        borderRadius: '20px',
-                                        px: 4,
-                                        py: 2,
-                                        textTransform: 'none',
-                                        fontSize: 15,
-                                        fontWeight: 500,
-                                        boxShadow: '0px 8px 20px rgba(0, 210, 193, 0.3)',
-                                        '&:hover': { bgcolor: '#00b0a2' }
-                                    }}
-                                >
-                                    Book Appointment Now
-                                </Button>
-
-                                <Button
-                                    variant="contained"
-                                    startIcon={<LocalPhoneIcon />}
-                                    sx={{
-                                        bgcolor: '#FFA1A1', // Image ka light red/pink color
-                                        color: '#B91C1C',
-                                        borderRadius: '20px',
-                                        px: 4,
-                                        py: 2,
-                                        textTransform: 'none',
-                                        fontSize: '15',
-                                        fontWeight: 500,
-                                        boxShadow: '0px 8px 20px rgba(255, 161, 161, 0.3)',
-                                        '&:hover': { bgcolor: '#ff8a8a' }
-                                    }}
-                                >
-                                    Emergency Call
-                                </Button>
-                            </Stack>
-                        </Stack>
-                    </Grid>
+{/* <Stack alignItems="center" sx={{ textAlign: 'center', mt: 4, px: 2 }}> */}
+    
+    {/* 1. Feature Info Cards */}
+    <Grid container spacing={2} sx={{ maxWidth: '450px'}}>
+        {[
+            { text: 'Certified Specialists', icon: <CheckCircleIcon fontSize="small" /> },
+            { text: '24/7 Availability', icon: <AccessTimeIcon fontSize="small" /> },
+            { text: 'Safe & Secure', icon: <ShieldIcon fontSize="small" /> },
+            { text: '500+ Doctors', icon: <PeopleIcon fontSize="small" /> },
+        ].map((item, index) => (
+            <Grid  size={{xs:12, md:6}} key={index}>
+                <Box
+                    sx={{
+                        background: 'linear-gradient(90deg, #4ADE80 0%, #BBF7D0 100%)',
+                        p: 1.8,
+                        borderRadius: '8px', // Full rounded like image
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center', // Text center karne ke liye
+                        gap: 1.5,
+                        boxShadow: '0px 4px 12px rgba(74, 222, 128, 0.2)',
+                    }}
+                >
+                    <Box sx={{ color: '#065F46', display: 'flex' }}>{item.icon}</Box>
+                    <Typography variant="body1" sx={{ fontWeight: 500, color: '#064E3B' }}>
+                        {item.text}
+                    </Typography>
+                </Box>
+            </Grid>
+        ))}
+    </Grid>
+ {/* </Stack> */}
+</Stack>
+</Grid>
 
                     {/* Right Side Image */}
                     <Grid size={{ xs: 12, md: 6 }} sx={{ display: 'flex', justifyContent: 'center' }}>

@@ -64,7 +64,7 @@ const PatientLayout: React.FC = () => {
                         }}>
                             <Box
                                 component="img"
-                                src="/src/assets/logo.jpg" 
+                                src="/src/assets/logo.jpg"
                                 alt="Logo"
                                 sx={{
                                     width: '45px',
@@ -191,26 +191,86 @@ const PatientLayout: React.FC = () => {
                 anchor="right"
                 open={mobileOpen}
                 onClose={handleDrawerToggle}
-                PaperProps={{ sx: { width: '250px', p: 2 } }}
+                PaperProps={{
+                    sx: {
+                        width: '200px',
+                        p: 2,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        height: '100%' // Ensure full height
+                    }
+                }}
             >
-                <Typography variant="h6" sx={{ mb: 2, color: '#1A5F7A', fontWeight: 700 }}>Menu</Typography>
-                <List>
-                    {navItems.map((item) => (
-                        <ListItem
-                            key={item.name}
-                            component={NavLink}
-                            to={item.path}
-                            onClick={handleDrawerToggle}
-                            sx={{ 
-                                borderRadius: '10px', 
-                                mb: 1,
-                                '&.active': { bgcolor: 'rgba(0, 210, 193, 0.1)', color: '#00D2C1' }
-                            }}
-                        >
-                            <ListItemText primary={item.name} />
-                        </ListItem>
-                    ))}
-                </List>
+                {/* Header */}
+                <Typography component="div" variant="h6" sx={{ mb: 2, color: '#1A5F7A', fontWeight: 500, px: 2 }}>
+                    <Box>
+                        <Typography component="div" variant="h5" sx={{ fontWeight: 500, color: '#1A5F7A', lineHeight: 1 }}>
+                            LifeCare
+                        </Typography>
+                        <Typography component="div" variant="caption" sx={{ color: '#86B6BB', fontWeight: 400, letterSpacing: 0.5 }}>
+                            Healthcare Solutions
+                        </Typography>
+                    </Box>
+                </Typography>
+
+                {/* Navigation Links - Wrapped in a Box with flexGrow to push buttons down */}
+                <Box sx={{ flexGrow: 0, overflowY: 'auto' }}>
+                    <List>
+                        {navItems.map((item) => (
+                            <ListItem
+                                key={item.name}
+                                component={NavLink}
+                                to={item.path}
+                                onClick={handleDrawerToggle}
+                                sx={{
+                                    borderRadius: '10px',
+                                    color: '#555',
+                                    '&.active': { bgcolor: 'rgba(0, 210, 193, 0.1)', color: '#00D2C1' }
+                                }}
+                            >
+                                <ListItemText primary={item.name} primaryTypographyProps={{ fontWeight: 500 }} />
+                            </ListItem>
+                        ))}
+                    </List>
+                </Box>
+
+                {/* Bottom Buttons - In a fixed container at the bottom of the drawer */}
+                <Stack spacing={2} sx={{ pt: 2, borderTop: '1px solid #eee' }}>
+                    <Button
+                        variant="outlined"
+                        component={NavLink}
+                        to="/admin"
+                        onClick={handleDrawerToggle}
+                        startIcon={<PersonOutlineIcon />}
+                        fullWidth
+                        sx={{
+                            borderRadius: '12px',
+                            color: '#1A5F7A',
+                            borderColor: 'rgba(26, 95, 122, 0.2)',
+                            textTransform: 'none',
+                            fontWeight: 600,
+                            py: 1.2 // Added padding for better mobile touch
+                        }}
+                    >
+                        Admin
+                    </Button>
+                    <Button
+                        variant="contained"
+                        disableElevation
+                        startIcon={<LoginIcon />}
+                        fullWidth
+                        sx={{
+                            borderRadius: '12px',
+                            bgcolor: '#00D2C1',
+                            '&:hover': { bgcolor: '#00b0a2' },
+                            textTransform: 'none',
+                            fontWeight: 600,
+                            py: 1.2
+                        }}
+                    >
+                        Login
+                    </Button>
+                </Stack>
             </Drawer>
         </Box>
     );

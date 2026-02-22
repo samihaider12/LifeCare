@@ -5,12 +5,11 @@ import {
   Box, Typography, Container, Grid, Paper, Stack,
   TextField, InputAdornment, Button, Avatar, Collapse, IconButton
 } from '@mui/material';
+import Swal from 'sweetalert2';
 import SearchIcon from '@mui/icons-material/Search';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import EditIcon from '@mui/icons-material/Edit';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-// import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const ServicesList: React.FC = () => {
   const { services, deleteService } = useServiceStore();
@@ -68,7 +67,7 @@ const ServicesList: React.FC = () => {
                     <Box>
                       <Typography variant="h6" color="#1A5F7A">{service.title}</Typography>
                       <Typography variant="body2" color="#00D2C1" fontWeight={500}>
-                        ₹{service.amount}
+                        Rs:{service.amount}
                       </Typography>
                     </Box>
                     <IconButton onClick={() => setExpandedId(expandedId === service.id ? null : service.id)}>
@@ -101,29 +100,37 @@ const ServicesList: React.FC = () => {
                       )}
 
                       <Stack direction="row" spacing={1} justifyContent="flex-end">
-                        <Button
-                          startIcon={<EditIcon />}
-                          variant="contained"
-                          size="small"
-                          sx={{ bgcolor: '#e0f7fa', color: '#006064', borderRadius: '20px' }}
-                          // TODO: open edit modal / page
-                        >
-                          Edit
-                        </Button>
-                        <Button
-                          startIcon={<DeleteOutlineIcon />}
-                          variant="contained"
-                          size="small"
-                          color="error"
-                          sx={{ borderRadius: '20px' }}
-                          onClick={() => {
-                            if (window.confirm("Delete this service?")) {
-                              deleteService(service.id);
-                            }
-                          }}
-                        >
-                          Delete
-                        </Button>
+                        
+                       <Button
+  startIcon={<DeleteOutlineIcon />}
+  variant="contained"
+  size="small"
+  color="error"
+  sx={{ borderRadius: '20px' }}
+  onClick={() => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteService(service.id);
+        Swal.fire(
+          'Deleted!',
+          'Your service has been deleted.',
+          'success'
+        );
+      }
+    });
+  }}
+>
+  Delete
+</Button>
                       </Stack>
                     </Box>
                   </Collapse>

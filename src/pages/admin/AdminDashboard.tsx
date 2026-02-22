@@ -67,29 +67,75 @@ const AdminDashboard: React.FC = () => {
       {/* Stats Cards Row */}
       <Grid container spacing={2} sx={{ mb: 4 }}>
         {statsCards.map((stat, index) => (
-          <Grid  size={{xs:12 ,sm:6 ,md:2.4}} key={index}>
-            <Paper elevation={0} sx={{ 
-              p: 2, 
-              borderRadius: '25px', 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: 1.5,
-              bgcolor: '#FFFFFF',
-              border: '1px solid #f0f0f0'
-            }}>
-              <Avatar sx={{ bgcolor: stat.color, color: '#1A2E35', width: 40, height: 40 }}>
-                {stat.icon}
-              </Avatar>
-              <Box>
-                <Typography variant="caption" sx={{ color: '#666', fontSize: '11px', fontWeight: 500 }}>
-                  {stat.label}
-                </Typography>
-                <Typography variant="h6" sx={{ fontWeight:500, lineHeight: 1.2 }}>
-                  {stat.value}
-                </Typography>
-              </Box>
-            </Paper>
-          </Grid>
+         <Grid 
+  size={{ xs: 12, sm: 6, md: 2.4 }} 
+  key={index}
+  sx={{
+    display: 'flex',
+    justifyContent: 'center',  
+  }}
+>
+  <Paper 
+    elevation={0} 
+    sx={{ 
+      p: 2.5, 
+      borderRadius: '8px', 
+      display: 'flex', 
+      flexDirection: 'column', // Icon upar, text neeche
+      alignItems: 'center',     // Dono ko horizontally center karne ke liye
+      justifyContent: 'center',
+      gap: 1,                   // Icon aur text ke darmiyan gap
+      bgcolor: '#FFFFFF',
+      border: '1px solid #f0f0f0',
+      width: '100%',
+      maxWidth: { xs: '250px', sm: '100%' }, // Mobile par card zyada wide na ho
+      transition: '0.3s ease',
+      '&:hover': { 
+        transform: 'translateY(-5px)', 
+        boxShadow: '0 8px 25px rgba(0,0,0,0.05)' 
+      }
+    }}
+  >
+    <Avatar 
+      sx={{ 
+        bgcolor: stat.color, 
+        color: '#1A2E35', 
+        width: 45, 
+        height: 45,
+        mb: 0.5 
+      }}
+    >
+      {stat.icon}
+    </Avatar>
+
+    <Box sx={{ textAlign: 'center' }}> {/* Text ko center karne ke liye */}
+      <Typography 
+        variant="caption" 
+        sx={{ 
+          color: '#666', 
+          fontSize: '11px', 
+          fontWeight: 500, 
+          display: 'block',
+          textTransform: 'uppercase',
+          letterSpacing: '0.5px'
+        }}
+      >
+        {stat.label}
+      </Typography>
+      <Typography 
+        variant="h6" 
+        sx={{ 
+          fontWeight: 500, 
+          lineHeight: 1.2,
+          color: '#1A2E35',
+          mt: 0.2
+        }}
+      >
+        {stat.value}
+      </Typography>
+    </Box>
+  </Paper>
+</Grid>
         ))}
       </Grid>
 

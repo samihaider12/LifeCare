@@ -22,7 +22,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 
 // Zustand store import (path adjust kar lena)
 import { useServiceStore } from '../../store/useServiceStore'; // ya jo bhi tumhara exact path hai
- 
+
 import { useAppointmentStore } from '../../store/appointments'; // naya store
 
 const ServiceDashboard: React.FC = () => {
@@ -146,7 +146,13 @@ const ServiceDashboard: React.FC = () => {
       {/* Stats Cards */}
       <Grid container spacing={3} sx={{ mb: 6 }}>
         {statsCards.map((stat, index) => (
-          <Grid size={{ xs: 12, sm: 6, md: 4, lg: 2.4 }} key={index}>
+          <Grid size={{ xs: 12, sm: 6, md: 4, lg: 2.4 }}
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              textAlign: "center"
+            }}
+            key={index}>
             <Paper
               elevation={0}
               sx={{
@@ -154,7 +160,11 @@ const ServiceDashboard: React.FC = () => {
                 borderRadius: '16px',
                 display: 'flex',
                 alignItems: 'center',
-                gap: 3,
+                 width: '100%',
+                maxWidth: { xs: '250px', sm: '100%' },
+                flexDirection: 'column', // Icon upar, text neeche
+                justifyContent: 'center',
+                gap: 1,
                 border: '1px solid #e0f2f1',
                 transition: 'all 0.2s',
                 '&:hover': {

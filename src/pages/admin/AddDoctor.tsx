@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   Box,
   Typography,
-  Container,
+  // Container,
   Grid,
   TextField,
   Button,
@@ -86,23 +86,23 @@ const AddDoctor: React.FC = () => {
     // Agar image nahi upload ki to default placeholder
     const imageUrl = previewImage || 'https://via.placeholder.com/150';
 
-   addDoctor({
-  name: data.name,
-  specialty: data.specialty,
-  location: data.location,
-  experience: data.experience,
-  qualifications: data.qualifications,
-  fee: Number(data.fee),
-  rating: data.rating,
-  patient: data.patients || "0",
-  successRate: data.successRate,
-  email: data.email,
-//   password: data.password,
-  about: data.about,
-  available: data.available,
-  image: imageUrl,
-//   id: kuch bhi mat l
-});
+    addDoctor({
+      name: data.name,
+      specialty: data.specialty,
+      location: data.location,
+      experience: data.experience,
+      qualifications: data.qualifications,
+      fee: Number(data.fee),
+      rating: data.rating,
+      patient: data.patients || "0",
+      successRate: data.successRate,
+      email: data.email,
+      //   password: data.password,
+      about: data.about,
+      available: data.available,
+      image: imageUrl,
+      //   id: kuch bhi mat l
+    });
 
     toast.success('Doctor added successfully!', { position: 'top-right' });
 
@@ -111,17 +111,17 @@ const AddDoctor: React.FC = () => {
     setPreviewImage(null);
   };
 
- const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const file = e.target.files?.[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      // Ye permanent string ban jayegi jo reset ke baad bhi store mein rahegi
-      setPreviewImage(reader.result as string);
-    };
-    reader.readAsDataURL(file);
-  }
-};
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        // Ye permanent string ban jayegi jo reset ke baad bhi store mein rahegi
+        setPreviewImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   // Warning show agar validation fail ho (optional, form already errors show karta hai)
   const onError = (_errors: any) => {
@@ -134,12 +134,21 @@ const AddDoctor: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="md" sx={{ mt: 4, pb: 8,width:"750px" }}>
+    <Grid maxWidth="md" size={{ xs: 12, md: 7 }}
+      sx={{
+        mx: 'auto',
+        mt: 4,
+        px: { xs: 2, md: 0 }
+
+      }}
+
+    >
+
       <Stack alignItems="center" spacing={1} sx={{ mb: 4 }}>
         <Avatar sx={{ bgcolor: '#00D2C1', width: 56, height: 56 }}>
           <AddCircleOutlineIcon fontSize="large" />
         </Avatar>
-        <Typography variant="h4" sx={{ color: '#1A5F7A', fontWeight: 500, fontSize:"35px" }}>
+        <Typography variant="h4" sx={{ color: '#1A5F7A', fontWeight: 500, fontSize: "35px" }}>
           Add New Doctor
         </Typography>
       </Stack>
@@ -157,8 +166,8 @@ const AddDoctor: React.FC = () => {
           <Grid container spacing={3}>
             {/* Image Upload with Preview */}
             <Grid size={{ xs: 12 }}>
-              <Typography variant="body2" sx={{ mb: 1,  }}>
-                Upload Profile Image  
+              <Typography variant="body2" sx={{ mb: 1, }}>
+                Upload Profile Image
               </Typography>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                 <Avatar
@@ -172,7 +181,7 @@ const AddDoctor: React.FC = () => {
                   sx={{
                     borderRadius: '50px',
                     textTransform: 'none',
-                    
+
                     borderColor: errors.imageFile ? 'error.main' : '#ccc',
                   }}
                 >
@@ -203,9 +212,9 @@ const AddDoctor: React.FC = () => {
                 <Controller
                   name={field.name}
                   control={control}
-                   
+
                   render={({ field: { onChange, value } }) => (
-                    
+
                     <TextField
                       fullWidth
                       size="small"
@@ -251,7 +260,7 @@ const AddDoctor: React.FC = () => {
                         </InputAdornment>
                       ),
                     }}
-                    sx={{ '& .MuiOutlinedInput-root': { borderRadius: '8px'  } }}
+                    sx={{ '& .MuiOutlinedInput-root': { borderRadius: '8px' } }}
                   />
                 )}
               />
@@ -274,7 +283,7 @@ const AddDoctor: React.FC = () => {
                     onChange={onChange}
                     error={!!errors.available}
                     helperText={errors.available?.message}
-                    sx={{ '& .MuiOutlinedInput-root': { borderRadius: '8px'} }}
+                    sx={{ '& .MuiOutlinedInput-root': { borderRadius: '8px' } }}
                   >
                     <MenuItem value="Available">Available</MenuItem>
                     <MenuItem value="Not Available">Not Available</MenuItem>
@@ -285,7 +294,7 @@ const AddDoctor: React.FC = () => {
 
             {/* About */}
             <Grid size={{ xs: 12 }}>
-               <Typography>
+              <Typography>
                 Doctor About
               </Typography>
               <Controller
@@ -319,7 +328,7 @@ const AddDoctor: React.FC = () => {
                   px: 8,
                   borderRadius: '8px',
                   fontWeight: 500,
-                  fontSize:"16px",
+                  fontSize: "16px",
                   textTransform: 'none',
                   '&:hover': { bgcolor: '#00ACC1' },
                 }}
@@ -330,7 +339,7 @@ const AddDoctor: React.FC = () => {
           </Grid>
         </form>
       </Paper>
-    </Container>
+    </Grid>
   );
 };
 
