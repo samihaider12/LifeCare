@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import {
   Box, Typography, Grid, Paper, Stack,
-  TextField, MenuItem, Avatar, InputAdornment, Select
+  TextField, MenuItem, Avatar, InputAdornment, Select,
+  Button
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import PhoneInTalkIcon from '@mui/icons-material/PhoneInTalk';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import EventBusyIcon from '@mui/icons-material/EventBusy'; // Empty state ke liye icon
+import SearchOffIcon from '@mui/icons-material/SearchOff'; 
 
 // Zustand store
 import { useAppointmentStore } from '../../store/appointments';
@@ -25,6 +26,12 @@ const ServicesAppointment: React.FC = () => {
     return matchesSearch && matchesStatus;
   });
 
+  // Reset function jo dono cheezon ko wapis normal kar dega
+  const handleReset = () => {
+    setSearchTerm('');
+    setStatusFilter('All');
+  };
+
   return (
     <Box sx={{ p: 3 }}>
       {/* SEARCH & FILTER BAR */}
@@ -36,7 +43,11 @@ const ServicesAppointment: React.FC = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
           sx={{ width: '300px', '& .MuiOutlinedInput-root': { borderRadius: '50px', bgcolor: '#fff' } }}
           InputProps={{
-            startAdornment: <InputAdornment position="start"><SearchIcon sx={{ color: '#00D2C1' }} /></InputAdornment>,
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon sx={{ color: '#00D2C1' }} />
+              </InputAdornment>
+            ),
           }}
         />
         <Select
@@ -123,22 +134,35 @@ const ServicesAppointment: React.FC = () => {
             </Grid>
           ))
         ) : (
-          /* NO APPOINTMENTS FOUND UI */
-          <Grid  size={{xs:12}}>
-            <Paper 
-              elevation={0} 
-              sx={{ 
-                p: 5, 
-                textAlign: 'center', 
-                borderRadius: '15px', 
-                border: '1px dashed #B2DFDB',
-                bgcolor: '#fafafa'
+          /* NO RESULTS FOUND UI */
+          <Grid size={{xs:12}}>
+            <Paper
+              elevation={0}
+              sx={{
+                p: 8,
+                textAlign: 'center',
+                borderRadius: '16px',
+                bgcolor: '#F9FAFB',
+                border: '1px dashed #e0f2f1'
               }}
             >
-              <EventBusyIcon sx={{ fontSize: 50, color: '#B2DFDB', mb: 1 }} />
-              <Typography variant="h6" color="textSecondary" sx={{ fontWeight: 500 }}>
-                No appointments 
+              <SearchOffIcon sx={{ fontSize: 60, color: '#B2DFDB', mb: 2 }} />
+              <Typography variant="h6" color="#1A5F7A" gutterBottom>
+                No appointments found
               </Typography>
+              <Typography variant="body2" color="text.secondary">
+                We couldn't find any record matching your criteria.
+              </Typography>
+              
+              {/* Button ab dono conditions par show hoga: Search ya Filter */}
+              {(searchTerm !== '' || statusFilter !== 'All') && (
+                <Button 
+                  sx={{ mt: 2, color: '#00D2C1', textTransform: 'none' }} 
+                  onClick={handleReset}
+                >
+                  Clear Search
+                </Button>
+              )}
             </Paper>
           </Grid>
         )}

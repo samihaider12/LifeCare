@@ -111,7 +111,7 @@ const Appointments: React.FC = () => {
           <Grid size={12}>
             <Paper sx={{ p: 4, textAlign: 'center', borderRadius: '20px' }}>
               <Typography variant="h6" color="text.secondary">
-                No appointments found
+                No appointments 
               </Typography>
             </Paper>
           </Grid>
