@@ -22,12 +22,14 @@ const AppointmentsPatient: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   // Search Logic (Patient Name, Doctor ya Service ke liye)
-  const filteredAppointments = appointments.filter((app) => {
+const filteredAppointments = appointments.filter((app) => {
     const search = searchTerm.toLowerCase();
+    
+    // Safely handle potentially undefined fields
     return (
-      app.patientName.toLowerCase().includes(search) ||
-      app.serviceTitle.toLowerCase().includes(search) ||
-      app.doctor?.toLowerCase().includes(search)
+      (app.patientName?.toLowerCase() ?? '').includes(search) ||
+      (app.serviceTitle?.toLowerCase() ?? '').includes(search) ||
+      (app.doctor?.toLowerCase() ?? '').includes(search)
     );
   });
 
@@ -108,8 +110,8 @@ const AppointmentsPatient: React.FC = () => {
 
                 <Box sx={{ my: 2 }}>
                   <Typography variant="caption" color="textSecondary">Fee Amount</Typography>
-                  <Typography variant="h6" sx={{ fontWeight: 700, color: '#333' }}>
-                    Rs {app.fee}
+                  <Typography variant="h6" sx={{ fontWeight: 500, color: '#333' }}>
+                    Rs:{app.fee}
                   </Typography>
                 </Box>
 

@@ -21,7 +21,7 @@ const Footer = () => {
               <Stack spacing={1}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <Phone sx={{ color: '#00D2C1', fontSize: "15px" }} />
-                  <Typography variant="body2">+91 8299131275</Typography>
+                  <Typography variant="body2">+92 8299131275</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <Email sx={{ color: '#00D2C1', fontSize: "15px" }} />
@@ -38,13 +38,28 @@ const Footer = () => {
           {/* Column 2: Quick Links */}
           <Grid size={{ xs: 12, sm: 6, md: 2 }}>
             <Typography variant="h6" sx={{ fontWeight: 500, fontSize: "18px", mb: 3, color: '#1A5F7A' }}>Quick Links</Typography>
-            <Stack spacing={1.5}>
-              {['Home', 'Doctors', 'Services', 'Contact', 'Appointments'].map((item) => (
-                <Link key={item} href="#" underline="none" sx={{ color: ' black', fontSize: '16px', '&:hover': { color: '#00D2C1' } }}>
-                  → {item}
-                </Link>
-              ))}
-            </Stack>
+           <Stack spacing={1.5}>
+  {[
+    { name: 'Home', path: '/' },
+    { name: 'Doctors', path: '/doctors' },
+    { name: 'Services', path: '/services' },
+    { name: 'Contact', path: '/contact' },
+    { name: 'Appointments', path: '/appointmentsPatient' },
+  ].map((item) => (
+    <Link 
+      key={item.name} 
+      href={item.path} 
+      underline="none" 
+      sx={{ 
+        color: 'black', 
+        fontSize: '16px', 
+        '&:hover': { color: '#00D2C1' } 
+      }}
+    >
+      → {item.name}
+    </Link>
+  ))}
+</Stack>
           </Grid>
 
           {/* Column 3: Our Services */}

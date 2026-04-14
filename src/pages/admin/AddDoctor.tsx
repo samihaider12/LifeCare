@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   Box,
   Typography,
-  // Container,
+   
   Grid,
   TextField,
   Button,
@@ -10,14 +10,12 @@ import {
   Avatar,
   MenuItem,
   Stack,
-  InputAdornment,
-  IconButton,
+
 } from '@mui/material';
 import { toast } from 'react-toastify';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+ 
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -46,7 +44,7 @@ const doctorSchema = yup.object().shape({
   password: yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
   about: yup.string().required('About section is required'),
   available: yup.string().required('Availability is required'),
-  // image: yup.mixed().required('Profile image is required'), // Uncomment agar image required chahiye
+  // image: yup.mixed().required('Profile image is required'), // Uncomment if need image required 
 });
 
 type DoctorFormData = yup.InferType<typeof doctorSchema> & {
@@ -55,7 +53,7 @@ type DoctorFormData = yup.InferType<typeof doctorSchema> & {
 
 const AddDoctor: React.FC = () => {
   const { addDoctor } = useMedicalStore();
-  const [showPassword, setShowPassword] = useState(false);
+  // const [showPassword, setShowPassword] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   const {
@@ -97,11 +95,9 @@ const AddDoctor: React.FC = () => {
       patient: data.patients || "0",
       successRate: data.successRate,
       email: data.email,
-      //   password: data.password,
       about: data.about,
       available: data.available,
       image: imageUrl,
-      //   id: kuch bhi mat l
     });
 
     toast.success('Doctor added successfully!', { position: 'top-right' });
@@ -200,9 +196,7 @@ const AddDoctor: React.FC = () => {
               { label: 'Experience (years)', name: 'experience' as const },
               { label: 'Qualifications', name: 'qualifications' as const },
               { label: 'Consultation Fee', name: 'fee' as const, type: 'number' },
-              { label: 'Rating (1.0 - 5.0)', name: 'rating' as const },
               { label: 'Patients Treated', name: 'patients' as const },
-              { label: 'Success Rate ', name: 'successRate' as const },
               { label: 'Doctor Email', name: 'email' as const, type: 'email' },
             ].map((field) => (
               <Grid size={{ xs: 12, sm: 6 }} key={field.name}>
@@ -232,40 +226,7 @@ const AddDoctor: React.FC = () => {
                 />
               </Grid>
             ))}
-
-            {/* Password */}
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <Typography>
-                Password
-              </Typography>
-              <Controller
-                name="password"
-                control={control}
-                render={({ field: { onChange, value } }) => (
-                  <TextField
-                    fullWidth
-                    size="small"
-                    placeholder="Doctor Password"
-                    type={showPassword ? 'text' : 'password'}
-                    value={value ?? ''}
-                    onChange={onChange}
-                    error={!!errors.password}
-                    helperText={errors.password?.message}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton onClick={() => setShowPassword(!showPassword)}>
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                    sx={{ '& .MuiOutlinedInput-root': { borderRadius: '8px' } }}
-                  />
-                )}
-              />
-            </Grid>
-
+ 
             {/* Available */}
             <Grid size={{ xs: 12, sm: 6 }}>
               <Typography>

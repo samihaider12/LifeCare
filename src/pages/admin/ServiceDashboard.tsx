@@ -13,6 +13,7 @@ import {
   TableRow,
   Avatar,
   Stack,
+  Chip,
 } from '@mui/material';
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import AssignmentIcon from '@mui/icons-material/Assignment';
@@ -20,17 +21,17 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 
-// Zustand store import (path adjust kar lena)
-import { useServiceStore } from '../../store/useServiceStore'; // ya jo bhi tumhara exact path hai
-
-import { useAppointmentStore } from '../../store/appointments'; // naya store
+import { useServiceStore } from '../../store/useServiceStore';
+import { useAppointmentStore } from '../../store/appointments';
 
 const ServiceDashboard: React.FC = () => {
   const { services } = useServiceStore();
   const { appointments } = useAppointmentStore();
 
-  // Real calculation – appointments se
   const calculated = React.useMemo(() => {
+    // Sirf service category ke appointments
+    const serviceAppointments = appointments.filter(app => app.category === 'service');
+
     const serviceStats = new Map<number, {
       appointments: number;
       completed: number;
@@ -38,27 +39,29 @@ const ServiceDashboard: React.FC = () => {
       earning: number;
     }>();
 
-    // Initialize har service ke liye zero
+    // Har service ke liye zero initialize
     services.forEach((s) => {
       serviceStats.set(s.id, { appointments: 0, completed: 0, canceled: 0, earning: 0 });
     });
 
-    // Appointments se count + earning
-    appointments.forEach((appt) => {
-      const stats = serviceStats.get(appt.serviceId);
-      if (stats) {
-        stats.appointments += 1;
-        if (appt.status === 'Completed') {
-          stats.completed += 1;
-          stats.earning += appt.fee;
-        }
-        if (appt.status === 'Canceled') {
-          stats.canceled += 1;
+    // Appointments se count + earning update
+    serviceAppointments.forEach((appt) => {
+      if (appt.serviceId !== undefined) {
+        const stats = serviceStats.get(appt.serviceId);
+        if (stats) {
+          stats.appointments += 1;
+          if (appt.status === 'Completed') {
+            stats.completed += 1;
+            stats.earning += appt.fee || 0;
+          }
+          if (appt.status === 'Canceled') {
+            stats.canceled += 1;
+          }
         }
       }
     });
 
-    // Totals
+    // Totals calculate
     let totalAppointments = 0;
     let totalCompleted = 0;
     let totalCanceled = 0;
@@ -90,7 +93,7 @@ const ServiceDashboard: React.FC = () => {
       totalCanceled,
       totalEarnings,
     };
-  }, [services, appointments]); // ← dono change hone pe update
+  }, [services, appointments]);  
 
   const {
     serviceWithStats,
@@ -100,163 +103,163 @@ const ServiceDashboard: React.FC = () => {
     totalEarnings,
   } = calculated;
 
-
   const statsCards = [
     {
       label: 'Total Services',
       value: services.length.toString(),
       icon: <MedicalServicesIcon />,
-      color: '#E0F2F1',
+      color: 'white',
     },
     {
       label: 'Total Appointments',
-      value: totalAppointments.toString(),
+      value: totalAppointments,
       icon: <AssignmentIcon />,
-      color: '#E3F2FD',
-    },
-    {
-      label: 'Total Earnings',
-      value: `Rs ${totalEarnings.toLocaleString()}`,
-      icon: <AccountBalanceWalletIcon />,
-      color: '#E8F5E9',
+      color: 'white',
     },
     {
       label: 'Completed',
-      value: totalCompleted.toString(),
+      value: totalCompleted,
       icon: <CheckCircleIcon />,
-      color: '#F1F8E9',
+      color: 'white',
     },
     {
-      label: 'Canceled',
-      value: totalCanceled.toString(),
+      label: 'Cancelled',
+      value: totalCanceled,
       icon: <CancelIcon />,
-      color: '#FFEBEE',
+      color: 'white',
     },
+     {
+      label: 'Total Earnings',
+      value: `Rs ${totalEarnings}`,
+      icon: <AccountBalanceWalletIcon />,
+      color: 'white',
+    }
   ];
 
   return (
     <Container maxWidth="xl" sx={{ mt: 4, pb: 6 }}>
-      <Typography variant="h4" sx={{ fontWeight: 500, color: '#1A5F7A', mb: 1 }}>
+      <Typography variant="h4" sx={{ fontWeight: 500, color: ' black', mb: 1 }}>
         Service Dashboard
       </Typography>
       <Typography variant="body1" color="text.secondary" sx={{ mb: 5 }}>
-        Aapke services, appointments aur total kamai ka overview
+        Overview Service Appointments
       </Typography>
 
       {/* Stats Cards */}
       <Grid container spacing={3} sx={{ mb: 6 }}>
         {statsCards.map((stat, index) => (
-          <Grid size={{ xs: 12, sm: 6, md: 4, lg: 2.4 }}
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              textAlign: "center"
-            }}
-            key={index}>
+          <Grid
+            size={{ xs: 12, sm: 6, md: 4, lg: 2.4 }}
+            sx={{ display: 'flex', justifyContent: 'center' }}
+            key={index}
+          >
             <Paper
               elevation={0}
               sx={{
-                p: 2,
+                p: 3,
                 borderRadius: '16px',
                 display: 'flex',
+                flexDirection: 'column',
                 alignItems: 'center',
-                 width: '100%',
-                maxWidth: { xs: '250px', sm: '100%' },
-                flexDirection: 'column', // Icon upar, text neeche
-                justifyContent: 'center',
-                gap: 1,
+                gap: 1.5,
                 border: '1px solid #e0f2f1',
-                transition: 'all 0.2s',
+                width: '100%',
+                maxWidth: 280,
+                transition: 'all 0.25s',
                 '&:hover': {
-                  boxShadow: '0 6px 24px rgba(0,210,193,0.15)',
-                  transform: 'translateY(-4px)',
+                  boxShadow: '0 8px 28px rgba(0,210,193,0.18)',
+                  transform: 'translateY(-5px)',
                 },
               }}
             >
-              <Avatar
-                sx={{
-                  bgcolor: stat.color,
-                  width: 45,
-                  height: 45,
-                  color: '#1A5F7A',
-                }}
-              >
-                {stat.icon}
-              </Avatar>
-              <Box>
-                <Typography variant="caption" color="text.secondary" display="block">
+              
+               <Chip
+                      icon={React.cloneElement(stat.icon, { sx: { fontSize: 28, color: '#0D4F5E' } })}
+                      label= {stat.value}
+                      sx={{
+                        bgcolor: 'transparent',
+                        color: '#0D4F5E',
+                        fontSize: '17px',
+                        fontWeight: 500,
+                        height: 'auto',
+                        p: '12px 16px',
+                        '& .MuiChip-label': { px: 1.5 },
+                        '& .MuiChip-icon': { ml: 0, mr: 1.2 }
+                      }}
+                    />
+              <Box sx={{ textAlign: 'center' }}>
+                <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
                   {stat.label}
                 </Typography>
-                <Typography variant="h5" fontWeight={500} color="#1A5F7A">
+                {/* <Typography variant="h5" fontWeight={500} color=" #555">
                   {stat.value}
-                </Typography>
+                </Typography> */}
               </Box>
             </Paper>
           </Grid>
         ))}
       </Grid>
-
+       
       {/* Services Table */}
       <Paper
         sx={{
           borderRadius: '20px',
           overflow: 'hidden',
           border: '1px solid #e0f2f1',
-          boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
         }}
       >
         <TableContainer>
           <Table>
             <TableHead sx={{ bgcolor: '#F9FEFB' }}>
               <TableRow>
-                <TableCell sx={{ fontWeight: 500, color: '#1A5F7A', pl: 3 }}>
-                  Service
-                </TableCell>
-                <TableCell sx={{ fontWeight: 500, color: '#1A5F7A' }}>Price</TableCell>
-                <TableCell sx={{ fontWeight: 500, color: '#1A5F7A' }}>Appointments</TableCell>
-                <TableCell sx={{ fontWeight: 500, color: '#1A5F7A' }}>Completed</TableCell>
-                <TableCell sx={{ fontWeight: 500, color: '#1A5F7A' }}>Canceled</TableCell>
-                <TableCell sx={{ fontWeight: 500, color: '#1A5F7A' }}>Earning</TableCell>
+                <TableCell sx={{ fontWeight: 500, color: '#0D4F5E', pl: 4 }}>Service</TableCell>
+                <TableCell sx={{ fontWeight: 500, color: '#0D4F5E' }}>Fee</TableCell>
+                <TableCell sx={{ fontWeight: 500, color: '#0D4F5E' }} align="center">Appointments</TableCell>
+                <TableCell sx={{ fontWeight: 500, color: '#0D4F5E' }} align="center">Completed</TableCell>
+                <TableCell sx={{ fontWeight: 500, color: '#0D4F5E' }} align="center">Canceled</TableCell>
+                <TableCell sx={{ fontWeight: 500, color: '#0D4F5E' }} align="right">Earning</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {serviceWithStats.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={6} sx={{ textAlign: 'center', py: 6 }}>
+                  <TableCell colSpan={6} sx={{ py: 8, textAlign: 'center' }}>
                     <Typography variant="h6" color="text.secondary">
-                      Abhi koi service add nahi hui
+                      No services or appointments yet
                     </Typography>
                   </TableCell>
                 </TableRow>
               ) : (
                 serviceWithStats.map((item) => (
-                  <TableRow key={item.id} hover sx={{ '&:last-child td': { border: 0 } }}>
-                    <TableCell sx={{ pl: 3 }}>
+                  <TableRow key={item.id} hover>
+                    <TableCell sx={{ pl: 4 }}>
                       <Stack direction="row" spacing={2} alignItems="center">
-                        <Avatar
-                          variant="rounded"
-                          src={item.image}
-                          sx={{ width: 48, height: 48 }}
-                        />
-                        <Typography fontWeight={500} color="#1A5F7A">
+                        <Avatar variant="rounded" src={item.image} sx={{ width: 52, height: 52 }} />
+                       <Box>
+                         <Typography fontWeight={500} color=" black">
                           {item.title}
                         </Typography>
+                        <Typography variant="caption" color=" black" >
+                         ID: {item.id}
+                        </Typography>
+                       </Box>
                       </Stack>
                     </TableCell>
-                    <TableCell>Rs {item.amount}</TableCell>
-                    <TableCell>{item.appointments}</TableCell>
-                    <TableCell>
-                      <Box component="span" sx={{ color: '#4CAF50', fontWeight: 500 }}>
+                    <TableCell>Rs {item.amount?.toLocaleString() || '—'}</TableCell>
+                    <TableCell align="center">{item.appointments}</TableCell>
+                    <TableCell align="center">
+                      <Typography sx={{ color: '#4CAF50', fontWeight: 500 }}>
                         {item.completed}
-                      </Box>
+                      </Typography>
                     </TableCell>
-                    <TableCell>
-                      <Box component="span" sx={{ color: '#F44336', fontWeight: 500 }}>
+                    <TableCell align="center">
+                      <Typography sx={{ color: '#F44336', fontWeight: 500 }}>
                         {item.canceled}
-                      </Box>
+                      </Typography>
                     </TableCell>
-                    <TableCell>
-                      <Typography fontWeight={500} color="#1A5F7A">
+                    <TableCell align="right">
+                      <Typography fontWeight={500} color=" black">
                         Rs {item.earning.toLocaleString()}
                       </Typography>
                     </TableCell>
@@ -268,14 +271,7 @@ const ServiceDashboard: React.FC = () => {
         </TableContainer>
       </Paper>
 
-      {/* Footer note */}
-      <Typography
-        variant="caption"
-        color="text.secondary"
-        sx={{ mt: 4, display: 'block', textAlign: 'center' }}
-      >
-        Yeh stats abhi demo ke liye random generate ho rahe hain • Real app mein appointments data se sync honge
-      </Typography>
+      
     </Container>
   );
 };

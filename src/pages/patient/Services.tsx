@@ -3,12 +3,14 @@ import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import { useServiceStore } from '../../store/useServiceStore';
 import { useNavigate } from 'react-router-dom'; // 1. Navigate import kiya
 
+import { auth } from "../../DataBase/fireBase";
+import Swal from 'sweetalert2';
 const Services = () => {
-  const { services } = useServiceStore(); 
+  const { services } = useServiceStore();
   const navigate = useNavigate(); // 2. Hook initialize kiya
 
   return (
-    <Box sx={{ bgcolor: '#F9FEFB', py: 10 }}> 
+    <Box sx={{ bgcolor: '#F9FEFB', py: 10 }}>
       <Container maxWidth="lg">
         <Box sx={{ textAlign: 'center', mb: 6 }}>
           <Typography variant="h3" sx={{ fontWeight: 500, color: '#135D54', mb: 1 }}>
@@ -21,7 +23,7 @@ const Services = () => {
 
         <Grid container spacing={3} justifyContent="center">
           {services.map((service) => (
-            <Grid size={{xs:12 ,sm:6 ,md:3}} key={service.id}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }} key={service.id}>
               <Card sx={{
                 borderRadius: '24px',
                 p: 4,
@@ -35,23 +37,37 @@ const Services = () => {
                   component="img"
                   image={service.image}
                   alt={service.title}
-                  sx={{ 
-                    height: 100, 
-                    width: 'auto', 
-                    mx: 'auto', 
-                    mb: 3, 
-                    objectFit: 'contain' 
+                  sx={{
+                    height: 100,
+                    width: 'auto',
+                    mx: 'auto',
+                    mb: 3,
+                    objectFit: 'contain'
                   }}
                 />
                 <Typography variant="h6" sx={{ fontWeight: 500, color: '#135D54', mb: 3, minHeight: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   {service.title}
                 </Typography>
-                
+
                 <Button
                   fullWidth
                   variant="contained"
-                  // 3. Click handle kiya: ID ke basis par navigate karega
-                  onClick={() => navigate(`/service/${service.id}`)} 
+                  onClick={() => {
+                    if (auth.currentUser) {
+                      navigate(`/service/${service.id}`)
+                    } else {
+                      Swal.fire({
+                        title: "Login Required",
+                        text: "Please login first to book an appointment",
+                        icon: "info",
+                        confirmButtonText: "Go to Login",
+                      }).then((result) => {
+                        if (result.isConfirmed) {
+                          navigate("/login"); // Apne login route ka path yahan likhein
+                        }
+                      });
+                    }
+                  }}
                   startIcon={<DoubleArrowIcon sx={{ fontSize: '14px !important' }} />}
                   sx={{
                     bgcolor: '#00D2C1',

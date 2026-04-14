@@ -26,12 +26,13 @@ const Appointments: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [specialty, setSpecialty] = useState('All specialties');
 
-  // Optional: simple client-side filter (real mein backend query ya more advanced filtering)
-  const filteredAppointments = appointments.filter((app) => {
+  const doctorAppointments = appointments.filter(app => app.category === 'doctor');
+
+  const filteredAppointments = doctorAppointments.filter((app) => {
     const matchesSearch =
       app.patientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      app.doctor?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      app.specialty?.toLowerCase().includes(searchTerm.toLowerCase());
+      (app.doctor || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (app.specialty || '').toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesSpecialty =
       specialty === 'All specialties' || app.specialty === specialty;
@@ -44,67 +45,46 @@ const Appointments: React.FC = () => {
     updateAppointmentStatus(id, newStatus);
   };
 
+
   return (
     <Container maxWidth="xl" sx={{ mt: 4, pb: 8 }}>
-      {/* HEADER */}
-      <Grid
-        size={{xs:12}}
-        direction={{ xs: 'column', md: 'row' }}
-        justifyContent="space-between"
-        alignItems="flex-start"
-        sx={{ mb: 4 }}
-      >
+      <Grid container direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" alignItems="flex-start" sx={{ mb: 4 }}>
         <Box>
           <Typography variant="h4" sx={{ fontWeight: 500, color: '#1A5F7A' }}>
-            Appointments
+            Doctor Appointments
           </Typography>
           <Typography variant="body2" color="textSecondary">
-            Manage and search upcoming patient appointments
+            Manage upcoming appointments with doctors
           </Typography>
         </Box>
 
-        {/* FILTERS */}
         <Stack direction="row" spacing={2} sx={{ mt: { xs: 2, md: 0 } }}>
           <TextField
-            placeholder="Search doctor, patient, specialty..."
+            placeholder="Search patient, doctor, specialty..."
             size="small"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            sx={{ width: '300px', '& .MuiOutlinedInput-root': { borderRadius: '8px', bgcolor: '#fff' } }}
+            sx={{ width: '300px', bgcolor: '#fff', borderRadius: '8px' }}
             InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon sx={{ color: '#00D2C1' }} />
-                </InputAdornment>
-              ),
+              startAdornment: <InputAdornment position="start"><SearchIcon sx={{ color: '#00D2C1' }} /></InputAdornment>,
             }}
           />
-          
-          <TextField
-            select
-            size="small"
-            value={specialty}
-            onChange={(e) => setSpecialty(e.target.value)}
-            sx={{ minWidth: '150px', '& .MuiOutlinedInput-root': { borderRadius: '8px', bgcolor: '#fff' } }}
-          >
+
+          <TextField select size="small" value={specialty} onChange={(e) => setSpecialty(e.target.value)}
+            sx={{ minWidth: '150px', bgcolor: '#fff', borderRadius: '8px' }}>
             <MenuItem value="All specialties">All specialties</MenuItem>
             <MenuItem value="Ophthalmology">Ophthalmology</MenuItem>
             <MenuItem value="Oncologist">Oncologist</MenuItem>
-            {/* Add more from your services if needed */}
+            {/* add more */}
           </TextField>
-          <Button
-            variant="contained"
-            sx={{ bgcolor: '#00D2C1', borderRadius: '8px', px: 3 }}
-            onClick={() => {
-              setSearchTerm('');
-              setSpecialty('All specialties');
-            }}
-          >
+
+          <Button variant="contained" sx={{ bgcolor: '#00D2C1', borderRadius: '8px', px: 3 }}
+            onClick={() => { setSearchTerm(''); setSpecialty('All specialties'); }}>
             Clear
           </Button>
         </Stack>
       </Grid>
-
+      
       {/* APPOINTMENTS GRID */}
       <Grid container spacing={3}>
         {filteredAppointments.length === 0 ? (
@@ -143,7 +123,7 @@ const Appointments: React.FC = () => {
                 <Box sx={{ my: 2 }}>
                   <Typography variant="caption" color="textSecondary">Fees</Typography>
                   <Typography variant="h6" sx={{ fontWeight: 700, color: '#333' }}>
-                    ₹ {app.fee}
+                    Rs {app.fee}
                   </Typography>
                 </Box>
 
@@ -166,14 +146,14 @@ const Appointments: React.FC = () => {
                 {/* Status + Admin Actions */}
                 <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
                   <Select
-                    fullWidth
                     size="small"
                     value={app.status}
                     onChange={(e) => handleStatusChange(app.id, e)}
                     sx={{
                       borderRadius: '50px',
                       fontSize: '11px',
-                      fontWeight: 600,
+                      fontWeight: 500,
+                      width:"100px",
                       '& .MuiSelect-select': { py: '6px' },
                     }}
                   >
@@ -183,24 +163,7 @@ const Appointments: React.FC = () => {
                     <MenuItem value="Canceled">Canceled</MenuItem>
                   </Select>
 
-                  <Button
-                    fullWidth
-                    variant="outlined"
-                    size="small"
-                    color="error"
-                    sx={{
-                      borderRadius: '50px',
-                      fontSize: '11px',
-                      fontWeight: 600,
-                    }}
-                    onClick={() => {
-                      if (window.confirm('Cancel this appointment?')) {
-                        updateAppointmentStatus(app.id, 'Canceled');
-                      }
-                    }}
-                  >
-                    Admin Cancel
-                  </Button>
+                  
                 </Stack>
               </Paper>
             </Grid>

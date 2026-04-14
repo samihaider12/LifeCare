@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import medicalData from '../data/data.json'; // JSON ko import kiya
+import medicalData from '../data/data.json';  
 
 interface Doctor {
   id: string;
@@ -16,7 +16,7 @@ interface Doctor {
   qualifications?: string;
   consultationFee?: number;
   available?: string;
-  experience?: string;
+  experience?: string; 
   rating?: string;
   successRate?: string;
   email?: string;

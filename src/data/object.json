@@ -1,0 +1,122 @@
+[
+    "doctors",
+    {
+        "id": "string",
+        "name": "string",
+        "specialty": "string",
+        "fee": "number",
+        "location": "string",
+        "image": "string",
+        "about": "string",
+        "patients": "string",
+        "qualifications": "string",
+        "consultationFee": "number",
+        "available": "string",
+        "experience": "string",
+        "rating": "string",
+        "successRate": "string",
+        "email": "string"
+    },
+    "service",
+    {
+        "id": "number",
+        "title": "string",
+        "amount": "number",
+        "image": "string",
+        "description": "string",
+        "instructions": "string",
+        "status": "Available' | 'Unavailable"
+    },
+    "Dr-Appointments",
+    {
+        "id": "string",
+        
+        "date": "string",
+        "time": "string",
+        "createdAt": "toISOString",
+        "status": "'Pending' | 'Confirmed' | 'Completed' | 'Cancelled'",
+        "specialty": "string",
+        "category": "doctor",
+        "doctor": "string"
+    },
+    "service-Appointments",
+    {
+        "serviceId": "number",
+        "serviceTitle": "string",
+        "date": "string",
+        "fee": "number",
+        "time": "string",
+        "createdAt": "toISOString",
+        "status": "'Pending' | 'Confirmed' | 'Completed' | 'Cancelled'",
+        "specialty": "string",
+        "category": "service"
+    },
+    "Dr.dashbord",
+    {
+        "id": "string",
+        "name": "string",
+        "specialty": "string",
+        "fee": "number",
+        "image": "string",
+        "consultationFee": "number",
+        "totalAppointments": "number",
+        "totalEarnings": "number",
+        "totalCompleted": "number",
+        "totalCanceled": "number",
+        "appointments": "number",
+        "completed": "number",
+        "canceled": "number",
+        " earning": "number"
+    },
+    "service.Dashbord",
+    {
+        "id": "number",
+        "title": "string",
+        "image": "string",
+        "amount": "number",
+        "services": "toString",
+        
+        "totalAppointments": "number",
+        "totalEarnings": "number",
+        "totalCompleted": "number",
+        "totalCanceled": "number",
+        "appointments": "number",
+        "completed": "number",
+        "canceled": "number",
+        " earning": "number"
+    },
+    "contect",
+    {
+        "email": "string",
+        "message": "string",
+        "name": "string",
+        "phone": "string"
+    },
+    "PatientReview",
+    {
+        "idReview": "number",
+        "name": "string",
+        "role": "string",
+        "rating": "number",
+        "text": "string"
+    },
+    "patients",
+    {
+        "fullName":" string",
+        "age": "string",
+        "gender": "string",
+        "cnic": "string",
+        "phone": "string",
+        "email": "string",  
+        "emergencyContact": {
+        "name": "string",
+        "relation": "string",
+        "phone": "string"
+        } 
+    },
+    "payment",
+    {
+        "paymentId": "number",
+        "payment": "number"
+    }
+]

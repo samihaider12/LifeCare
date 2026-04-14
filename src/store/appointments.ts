@@ -1,22 +1,24 @@
-// store/appointments.ts
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
+export type AppointmentCategory = 'doctor' | 'service';
+
 export type Appointment = {
-  id: number;                
-  patientName: string;
-  age: string;
-  gender: string;
-  phone: string;
-  serviceId: number;             
-  serviceTitle: string;           
-  doctor: string;                  
-  specialty: string;
+  id: number;
+  category: AppointmentCategory;     // required
+  // Doctor-specific
+  doctor?: string; 
+  specialty?: string; 
+  // Service-specific
+  serviceId?: number;
+  serviceTitle?: string;
+
   fee: number;
   date: string;
   time: string;
   status: 'Pending' | 'Confirmed' | 'Completed' | 'Canceled';
   createdAt: string;
+  // cash:number;
 };
 
 type AppointmentState = {
@@ -25,7 +27,6 @@ type AppointmentState = {
   addAppointment: (app: Omit<Appointment, 'id'>) => void;
   updateAppointmentStatus: (id: number, status: Appointment['status']) => void;
 };
-
 
 export const useAppointmentStore = create<AppointmentState>()(
   persist(

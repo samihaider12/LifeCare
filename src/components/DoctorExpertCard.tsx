@@ -3,6 +3,8 @@ import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { useNavigate } from 'react-router-dom'; // 1. Import useNavigate
 
+import { auth } from "../DataBase/fireBase";
+import Swal from 'sweetalert2';
 const DoctorExpertCard = ({ doctor }: { doctor: any }) => {
   const navigate = useNavigate(); // 2. Initialize hook
 
@@ -32,24 +34,24 @@ const DoctorExpertCard = ({ doctor }: { doctor: any }) => {
       <Typography variant="h6" sx={{ fontWeight: 500, color: '#1A5F7A', mb: 0.5 }}>
         {doctor.name}
       </Typography>
-      
+
       <Typography variant="body2" sx={{ color: '#00D2C1', fontWeight: 500, mb: 2, fontStyle: 'italic' }}>
         {doctor.specialty}
       </Typography>
 
       {/* Experience Badge */}
-      <Box sx={{ 
-        display: 'inline-flex', 
-        alignItems: 'center', 
-        bgcolor: '#F1FBF3', 
-        px: 2, py: 0.5, 
+      <Box sx={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        bgcolor: '#F1FBF3',
+        px: 2, py: 0.5,
         borderRadius: '20px',
         mb: 3,
         border: '1px solid #00D2C1'
       }}>
         <WorkspacePremiumIcon sx={{ fontSize: 16, color: '#1A5F7A', mr: 1 }} />
         <Typography variant="caption" sx={{ fontWeight: 500, color: '#1A5F7A' }}>
-          {doctor.experience} 
+          {doctor.experience}
         </Typography>
       </Box>
 
@@ -58,7 +60,22 @@ const DoctorExpertCard = ({ doctor }: { doctor: any }) => {
         fullWidth
         variant="contained"
         // 3. Navigation path set karein (make sure route match kare)
-         onClick={() => navigate(`/doctor/${doctor.id}`)}
+        onClick={() => {
+          if (auth.currentUser) {
+            navigate(`/doctor/${doctor.id.toString()}`);
+          } else {
+            Swal.fire({
+              title: "Login Required",
+              text: "Please login first to book an appointment",
+              icon: "info",
+              confirmButtonText: "Go to Login",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                navigate("/login"); // Apne login route ka path yahan likhein
+              }
+            });
+          }
+        }}
         endIcon={<ArrowForwardIosIcon sx={{ fontSize: '12px !important' }} />}
         sx={{
           bgcolor: '#00D2C1',

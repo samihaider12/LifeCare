@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import {
     Box,
     Stack,
@@ -8,15 +8,18 @@ import {
     Container,
     useTheme,
     useMediaQuery,
-    IconButton,
+    // IconButton,
     Drawer,
     List,
     ListItem,
     ListItemText
 } from '@mui/material';
-import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import { auth } from "../../DataBase/fireBase";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import LogoutIcon from '@mui/icons-material/Logout';
+
 import LoginIcon from '@mui/icons-material/Login';
-import MenuIcon from '@mui/icons-material/Menu';
+// import MenuIcon from '@mui/icons-material/Menu';
 import Footer from '../Footer'; // Footer ka sahi path check kar lein
 //
 import logoImg from "../../assets/logo.jpg"
@@ -37,6 +40,23 @@ const PatientLayout: React.FC = () => {
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
+    ///
+    const [user, setUser] = React.useState<any>(null);
+    const navigate = useNavigate();
+
+    React.useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+            setUser(currentUser);
+        });
+        return () => unsubscribe();
+    }, []);
+
+    const handleLogout = async () => {
+        await signOut(auth);
+        navigate('/login');  
+    };
+
+
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
@@ -134,46 +154,32 @@ const PatientLayout: React.FC = () => {
                     )}
 
                     {/* 3. AUTH BUTTONS */}
-                    <Stack direction="row" spacing={2} alignItems="center">
-                        {!isMobile ? (
-                            <>
-                                <Button
-                                    variant="outlined"
-                                    component={NavLink}
-                                    to="/admin" // Admin dashboard par jane ke liye
-                                    startIcon={<PersonOutlineIcon />}
-                                    sx={{
-                                        borderRadius: '12px',
-                                        color: '#1A5F7A',
-                                        borderColor: 'rgba(26, 95, 122, 0.2)',
-                                        textTransform: 'none',
-                                        fontWeight: 600,
-                                        px: 3,
-                                        '&:hover': { borderColor: '#1A5F7A', bgcolor: 'transparent' }
-                                    }}
-                                >
-                                    Admin
-                                </Button>
-                                <Button
-                                    variant="contained"
-                                    disableElevation
-                                    startIcon={<LoginIcon />}
-                                    sx={{
-                                        borderRadius: '12px',
-                                        bgcolor: '#00D2C1',
-                                        '&:hover': { bgcolor: '#00b0a2' },
-                                        textTransform: 'none',
-                                        fontWeight: 600,
-                                        px: 4
-                                    }}
-                                >
-                                    Login
-                                </Button>
-                            </>
+                    {/* Bottom Buttons in Drawer */}
+                    <Stack spacing={2} >
+                        {user ? (
+                            <Button
+                                fullWidth
+                                size='small'
+                                variant="outlined"
+                                color="error"
+                                onClick={handleLogout}
+                                startIcon={<LogoutIcon />}
+                            >
+                                Logout
+                            </Button>
                         ) : (
-                            <IconButton onClick={handleDrawerToggle} sx={{ color: '#1A5F7A' }}>
-                                <MenuIcon fontSize="large" />
-                            </IconButton>
+                            <Button
+                                variant="contained"
+                                size='small'
+                                startIcon={<LoginIcon />}
+                                component={NavLink}
+                                to="/login"
+                                fullWidth
+                                onClick={handleDrawerToggle}
+                                sx={{ borderRadius: '12px', bgcolor: '#00D2C1' }}
+                            >
+                                Login
+                            </Button>
                         )}
                     </Stack>
                 </Stack>
@@ -236,41 +242,45 @@ const PatientLayout: React.FC = () => {
                 </Box>
 
                 {/* Bottom Buttons - In a fixed container at the bottom of the drawer */}
-                <Stack spacing={2} sx={{ pt: 2, borderTop: '1px solid #eee' }}>
+                <Stack spacing={2} >
+
+                    const authButton = user ? (
                     <Button
                         variant="outlined"
-                        component={NavLink}
-                        to="/admin"
-                        onClick={handleDrawerToggle}
-                        startIcon={<PersonOutlineIcon />}
-                        fullWidth
+                        size='small'
+                        startIcon={<LogoutIcon />}
+                        onClick={handleLogout}
                         sx={{
                             borderRadius: '12px',
-                            color: '#1A5F7A',
-                            borderColor: 'rgba(26, 95, 122, 0.2)',
+                            color: '#ff4d4d',
+                            borderColor: '#ff4d4d',
+                            '&:hover': { bgcolor: '#fff5f5', borderColor: '#cc0000' },
                             textTransform: 'none',
                             fontWeight: 600,
-                            py: 1.2 // Added padding for better mobile touch
+                            px: 3
                         }}
                     >
-                        Admin
+                        Logout
                     </Button>
+                    ) : (
                     <Button
                         variant="contained"
-                        disableElevation
+                        size='small'
                         startIcon={<LoginIcon />}
-                        fullWidth
+                        component={NavLink}
+                        to="/login"
                         sx={{
                             borderRadius: '12px',
                             bgcolor: '#00D2C1',
                             '&:hover': { bgcolor: '#00b0a2' },
                             textTransform: 'none',
                             fontWeight: 600,
-                            py: 1.2
+                            px: 4
                         }}
                     >
                         Login
                     </Button>
+                    );
                 </Stack>
             </Drawer>
         </Box>

@@ -1,6 +1,6 @@
 // store/services.ts
 import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';  // ← yeh import add karo
+import { persist, createJSONStorage } from 'zustand/middleware';  
 
 export interface Service {
   id: number;
@@ -67,10 +67,9 @@ export const useServiceStore = create<ServiceState>()(
     }),
 
     {
-      name: 'doctor-services-storage',          // ← localStorage key (browser mein yeh naam se save hoga)
-      storage: createJSONStorage(() => localStorage), // ya sessionStorage bhi use kar sakte ho
-      partialize: (state) => ({ services: state.services }), // sirf services save karo
-      // version: 1, // agar structure change ho to version badha dena
+      name: 'doctor-services-storage',      
+      storage: createJSONStorage(() => localStorage),  
+      partialize: (state) => ({ services: state.services }), 
     }
   )
 );

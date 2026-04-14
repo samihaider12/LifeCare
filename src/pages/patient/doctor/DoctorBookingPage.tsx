@@ -10,25 +10,21 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import Swal from 'sweetalert2';
 import { useMedicalStore } from '../../../store/useMedicalStore';
-import { useAppointmentStore } from '../../../store/appointments'; // ← import yeh add karo
+import { useAppointmentStore, type Appointment } from '../../../store/appointments';
 
 const DoctorBookingPage = () => {
   const navigate = useNavigate();
-  const { id } = useParams<{ id: string }>(); // ← type specify kar diya
+  const { id } = useParams<{ id: string }>();
 
   const { doctors } = useMedicalStore();
   const { addAppointment } = useAppointmentStore();
 
-  // doctor ko safely find karo (undefined handle)
   const doctor = doctors.find((d) => String(d.id) === id);
 
-  // Agar doctor nahi mila to early return
   if (!doctor) {
     return (
       <Container sx={{ mt: 10, textAlign: 'center' }}>
-        <Typography variant="h5" color="error">
-          Doctor Not Found
-        </Typography>
+        <Typography variant="h5" color="error">Doctor Not Found</Typography>
         <Button variant="contained" sx={{ mt: 3 }} onClick={() => navigate(-1)}>
           Go Back
         </Button>
@@ -36,17 +32,12 @@ const DoctorBookingPage = () => {
     );
   }
 
-  // States
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<'Cash' | 'Online'>('Cash');
   const [onlineProvider, setOnlineProvider] = useState<string>('');
   const [patientInfo, setPatientInfo] = useState({
-    name: '',
-    age: '',
-    phone: '',
-    gender: '',
-    email: '',
+    name: '', age: '', phone: '', gender: '', email: '',
   });
   const [availableDates, setAvailableDates] = useState<any[]>([]);
 
@@ -54,7 +45,6 @@ const DoctorBookingPage = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-
     const dates = [];
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     for (let i = 0; i < 5; i++) {
@@ -77,41 +67,30 @@ const DoctorBookingPage = () => {
               <span style="color:#f44336; font-size:20px;">⚠️</span>
               <span>Please fill all patient details!</span>
             </div>`,
-        toast: true,
-        position: 'top',
-        showConfirmButton: false,
-        timer: 3000
+        toast: true, position: 'top', showConfirmButton: false, timer: 3000
       });
       return;
     }
 
     if (paymentMethod === 'Online' && !onlineProvider) {
-      Swal.fire({
-        icon: 'warning',
-        text: 'Please select an Online Payment Provider (Easypaisa/Jazzcash/Bank)',
-        confirmButtonColor: '#00A684'
-      });
+      Swal.fire({ icon: 'warning', text: 'Please select payment provider', confirmButtonColor: '#00A684' });
       return;
     }
 
-    // Appointment object – serviceId ko NUMBER mein convert kiya
-    const newAppointment = {
-      patientName: patientInfo.name,
-      age: patientInfo.age,
-      gender: patientInfo.gender,
-      phone: patientInfo.phone,
-      serviceId: Number(doctor.id),           // ← string se number convert
-      serviceTitle: doctor.name,
+    const newAppointment: Omit<Appointment, 'id'> = {
+      category: 'doctor',
+
       doctor: doctor.name,
       specialty: doctor.specialty,
+
       fee: doctor.fee,
       date: selectedDate,
       time: selectedTime,
-      status: 'Pending' as const,
+      status: 'Pending',
       createdAt: new Date().toISOString(),
+      // cash:
     };
 
-    // Store mein add
     addAppointment(newAppointment);
 
     Swal.fire({
@@ -122,7 +101,6 @@ const DoctorBookingPage = () => {
       showConfirmButton: false,
     }).then(() => {
       navigate('/');
-      // Reset form
       setSelectedDate(null);
       setSelectedTime(null);
       setPatientInfo({ name: '', age: '', phone: '', gender: '', email: '' });
@@ -249,60 +227,9 @@ const DoctorBookingPage = () => {
                 ))}
               </Stack>
 
-              <Box sx={{ p: 3, border: '1px solid #F0F0F0', borderRadius: '20px' }}>
-                <Typography sx={{ fontWeight: 500, color: '#006B5E', mb: 2 }}>Patient Details</Typography>
-                <Grid container spacing={2}>
-                  <Grid size={{ xs: 7 }}>
-                    <TextField
-                      fullWidth
-                      size="small"
-                      placeholder="Full Name"
-                      value={patientInfo.name}
-                      onChange={(e) => setPatientInfo({ ...patientInfo, name: e.target.value })}
-                      sx={{ '& .MuiOutlinedInput-root': { borderRadius: '12px' } }}
-                    />
-                  </Grid>
-                  <Grid size={{ xs: 5 }}>
-                    <TextField
-                      fullWidth
-                      size="small"
-                      placeholder="Age"
-                      value={patientInfo.age}
-                      onChange={(e) => setPatientInfo({ ...patientInfo, age: e.target.value })}
-                      sx={{ '& .MuiOutlinedInput-root': { borderRadius: '12px' } }}
-                    />
-                  </Grid>
-                  <Grid size={{ xs: 7 }}>
-                    <TextField
-                      fullWidth
-                      size="small"
-                      placeholder="Mobile Number"
-                      value={patientInfo.phone}
-                      onChange={(e) => setPatientInfo({ ...patientInfo, phone: e.target.value })}
-                      sx={{ '& .MuiOutlinedInput-root': { borderRadius: '12px' } }}
-                    />
-                  </Grid>
-                  <Grid size={{ xs: 5 }}>
-                    <TextField
-                      select
-                      fullWidth
-                      size="small"
-                      value={patientInfo.gender}
-                      onChange={(e) => setPatientInfo({ ...patientInfo, gender: e.target.value })}
-                      sx={{ '& .MuiOutlinedInput-root': { borderRadius: '12px' } }}
-                    >
-                      <MenuItem value="Male">Male</MenuItem>
-                      <MenuItem value="Female">Female</MenuItem>
-                      <MenuItem value="Other">Other</MenuItem>
-                    </TextField>
-                  </Grid>
-                </Grid>
-              </Box>
-            </Grid>
-
-            <Grid size={{ xs: 12, md: 6 }}>
-              <Typography variant="subtitle2" sx={{ fontWeight: 500, mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-                <AccessTimeIcon sx={{ fontSize: 16 }} /> Available Time Slots
+              {/* time show */}
+              <Typography variant="subtitle2" sx={{ fontWeight: 500, mb: 2, display: 'flex', alignItems: 'center', gap: 0.4 }}>
+                <AccessTimeIcon sx={{ fontSize: "15px" }} /> Available Time Slots
               </Typography>
               {!selectedDate ? (
                 <Typography variant="caption" color="textSecondary">No time slots for this date.</Typography>
@@ -315,7 +242,7 @@ const DoctorBookingPage = () => {
                       label={t}
                       onClick={() => setSelectedTime(t)}
                       sx={{
-                        p: 2.5,
+                        p: 1.5,
                         borderRadius: '50px',
                         fontWeight: 500,
                         bgcolor: selectedTime === t ? '#00D2C1' : '#fff',
@@ -326,6 +253,10 @@ const DoctorBookingPage = () => {
                   ))}
                 </Stack>
               )}
+
+            </Grid>
+
+            <Grid size={{ xs: 12, md: 6 }}>
 
               <Box sx={{ p: 3, bgcolor: '#F4FBF9', borderRadius: '20px', border: '1px solid #E0F2F0' }}>
                 <Stack spacing={1.5}>

@@ -9,6 +9,8 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { useMedicalStore } from '../../store/useMedicalStore';
 import medicalData from '../../data/data.json';
 import { useNavigate } from 'react-router-dom';
+import { auth } from "../../DataBase/fireBase";
+import Swal from 'sweetalert2';
 
 const MedicalTeam = () => {          // ← props doctors hata do
   const navigate = useNavigate();
@@ -20,7 +22,7 @@ const MedicalTeam = () => {          // ← props doctors hata do
     }
   }, [doctors.length, setDoctors]);   // dependency sahi rakho
 
- 
+
 
   if (doctors.length === 0) {
     return (
@@ -78,12 +80,32 @@ const MedicalTeam = () => {          // ← props doctors hata do
                 <Button
                   fullWidth
                   variant="contained"
-                  onClick={() => navigate(`/doctor/${doctor.id.toString()}`)}
+                  onClick={() => {
+                    if (auth.currentUser) {
+                      navigate(`/doctor/${doctor.id.toString()}`);
+                    } else {
+                      Swal.fire({
+                        title: "Login Required",
+                        text: "Please login first to book an appointment",
+                        icon: "info",
+                        confirmButtonText: "Go to Login",
+                      }).then((result) => {
+                        if (result.isConfirmed) {
+                          navigate("/login"); // Apne login route ka path yahan likhein
+                        }
+                      });
+                    }
+                  }}
                   endIcon={<ArrowForwardIosIcon />}
-                  sx={{ bgcolor: '#00D2C1', borderRadius: '15px' }}
+                  sx={{
+                    bgcolor: '#00D2C1',
+                    borderRadius: '15px',
+                    '&:hover': { bgcolor: '#00b8a9' } // Hover effect ke liye
+                  }}
                 >
                   Book Now
                 </Button>
+
               </CardContent>
             </Card>
           </Grid>
